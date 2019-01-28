@@ -1,7 +1,6 @@
 import sys
 import os
 import string
-import re
 
 #argv[1]数据类型是字符串。是文件列表，运行的时候输入为 "A文件名 B文件名 C文件名"  这些文件名如果不在一个文件夹，那么必须是绝对地址
 #argv[1]如果是相对地址，那么这些文件名必须全部在同一个文件夹内，并且这个文件也要在那个文件夹内
@@ -13,8 +12,6 @@ file_array = sys.argv[1].split(" ")
 for one_file in file_array:
 	file_name = os.path.basename(one_file)     #从绝对路径中得到文件名
 	file_new = sys.argv[4]+file_name           #得到新的目录的绝对路径
-
-	regrex = re.compile("\W"+sys.argv[2]+"\W")
 
 	#search_for_one = " "+sys.argv[2]+"\\n"      #考虑换行的前一个字的全词匹配
 	#replace_with_one = " "+sys.argv[3]+"\\n"         
@@ -37,7 +34,7 @@ for one_file in file_array:
 		fi.close()
 		continue
 	for s in fi.readlines():
-		#s_new = s.replace(sys.argv[2],sys.argv[3])
+		s_new = s.replace(sys.argv[2],sys.argv[3])
 		
 		
 
