@@ -13,35 +13,31 @@ for one_file in file_array:
 	file_name = os.path.basename(one_file)     #从绝对路径中得到文件名
 	file_new = sys.argv[4]+file_name           #得到新的目录的绝对路径
 
-	#search_for_one = " "+sys.argv[2]+"\\n"      #考虑换行的前一个字的全词匹配
-	#replace_with_one = " "+sys.argv[3]+"\\n"         
-	#search_for_two = sys.argv[2]+" "           #考虑每一行前面的第一个字的全词匹配
-	#replace_with_two = sys.argv[3]+" "
-	#search_for_three = " "+sys.argv[2]+" "     #考虑每一行中间的单词的全词匹配
-	#replace_with_three = " "+sys.argv[3]+" "
-	#print(search_for)
-	#print(file_new)
-
 	try:                                             #尝试打开旧文件
 		fi = open(one_file,"r",encoding="UTF-8")
 	except IOError:
 		print("can't open "+one_file)
 		continue 
 	try:                                             #尝试打开新文件
-		fn = open(file_new,"w")
+		fn = open(file_new,"a+")
 	except IOError:
 		print("can't open "+file_new)
 		fi.close()
 		continue
-	for s in fi.readlines():
-		s_new = s.replace(sys.argv[2],sys.argv[3])
-		
-		
-
-		'''s_new = s.replace(search_for_one,replace_with_one)  
-		s_new = s.replace(search_for_two,replace_with_two) 
-		s_new = s.replace(search_for_three,replace_with_three)'''
-		fn.write(s_new)
+	for s in fi.readlines():                          #读取一行
+		#s_new = s.replace(sys.argv[2],sys.argv[3])
+		s_array = s.split(" ")
+		for word in s_array:                          #得到每一个单词
+			if word==sys.argv[2]:                     #相符的情况分为在行尾和不在行尾
+				word=sys.argv[3]
+			elif word==sys.argv[2]+"\n":
+				word=sys.argv[3]+"\n"
+				fn.write(word)
+				continue
+			elif word.find("\n")!=-1:                #不相符的情况在行尾也需要进行处理
+				fn.write(word)
+				continue
+			fn.write(word+" ")
 	fi.close()
 	fn.close()
 
